@@ -44,22 +44,19 @@ The λ (lambda) value controls how aggressively the model prunes weights.
 
 # Observations
 
-## Observations
+- The sparsity level remains extremely low (~0.01%) for all values of λ
+- This suggests that the model is not effectively learning to prune weights
 
-- The sparsity level remains almost constant (~0.01%) across all values of λ
-- This indicates that the model is not effectively pruning weights during training
-- Even when λ is increased, the gate values are not being pushed close to zero
+- Increasing λ slightly reduces accuracy, but does not increase sparsity
+- This indicates that the sparsity regularization is not strong enough to push gate values towards zero
 
-- The accuracy decreases slightly as λ increases, but without any meaningful gain in sparsity
-- This suggests that the sparsity regularization is not strong enough or not influencing the gates properly
+- Ideally, higher λ should result in higher sparsity, but this trend is not observed here
+- This could be due to:
+  - Gate values not reaching sufficiently low values after sigmoid
+  - λ being too small to influence training significantly
+  - The threshold used to calculate sparsity being too strict
 
-- Possible reasons could be:
-  - λ value is too small to impact training
-  - Gate values (after sigmoid) are not reaching very low values
-  - The threshold used to measure sparsity might be too strict
-
-Overall, the current setup does not show a strong sparsity vs accuracy trade-off, and further tuning is needed to achieve effective pruning.
-
+Overall, the current model behaves more like a standard neural network rather than a self-pruning one, and further tuning is required to achieve meaningful sparsity.
 
 ## How to Run
 
@@ -72,6 +69,6 @@ Overall, the current setup does not show a strong sparsity vs accuracy trade-off
    python train.py
 
 
-## Notes
+
 
 This implementation focuses on understanding how sparsity can be introduced during training instead of as a separate step. It also shows how regularization can influence model structure dynamically.
